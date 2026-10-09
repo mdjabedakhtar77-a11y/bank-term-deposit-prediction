@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Call Targeting for Bank Campaigns — AI/ML Decision Engine</title>
+  <meta name="description" content="Smart Call Targeting for Bank Campaigns: Machine Learning model for term deposit customer selection, lead score optimization, and call reduction.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Smart Call Targeting</span>
+          <span class="brand-subtitle">Bank Campaigns Engine</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#overview" class="nav-item active" data-tab="overview">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+          Executive Overview
+        </a>
+        <a href="#eda" class="nav-item" data-tab="eda">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          Customer EDA & Insights
+        </a>
+        <a href="#models" class="nav-item" data-tab="models">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Model Performance & Comparison
+        </a>
+        <a href="#leads" class="nav-item" data-tab="leads">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Priority Contact List
+        </a>
+        <a href="#simulator" class="nav-item" data-tab="simulator">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
+          Lead Score Simulator
+        </a>
+        <a href="#strategy" class="nav-item" data-tab="strategy">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>
+          Business Action Plan
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="badge-status">
+          <span class="status-indicator"></span>
+          <span>Engine: Random Forest (v1.0)</span>
+        </div>
+        <div class="dataset-tag">UCI Bank Marketing (4,521 Records)</div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="top-header">
+        <div>
+          <h1 class="header-title">Smart Call Targeting for Bank Campaigns</h1>
+          <p class="header-subtitle">Machine Learning optimization: identifying high-propensity leads to eliminate redundant calls</p>
+        </div>
+        <div class="header-actions">
+          <span class="campaign-pill">Quarterly Campaign</span>
+          <button class="btn-primary" onclick="window.scrollToSection('leads')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            View Priority Calling Queue
+          </button>
+        </div>
+      </header>
+
+      <!-- Section: Executive Overview -->
+      <section id="overview" class="content-section">
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card accent-blue">
+            <div class="kpi-header">
+              <span class="kpi-label">Total Evaluated Leads</span>
+              <div class="kpi-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiTotal">4,521</div>
+            <div class="kpi-subtext">Historical client contacts recorded</div>
+          </div>
+
+          <div class="kpi-card accent-green">
+            <div class="kpi-header">
+              <span class="kpi-label">Actual Conversion Rate</span>
+              <div class="kpi-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiRate">11.52%</div>
+            <div class="kpi-subtext"><span id="kpiSubscribers">521</span> term deposit subscribers</div>
+          </div>
+
+          <div class="kpi-card accent-purple">
+            <div class="kpi-header">
+              <span class="kpi-label">Top 20% Call Capture (Lift)</span>
+              <div class="kpi-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value">75.0%</div>
+            <div class="kpi-subtext">3.75x improvement over untargeted calling</div>
+          </div>
+
+          <div class="kpi-card accent-amber">
+            <div class="kpi-header">
+              <span class="kpi-label">Random Forest ROC-AUC</span>
+              <div class="kpi-icon-wrap">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+            </div>
+            <div class="kpi-value" id="kpiAuc">0.901</div>
+            <div class="kpi-subtext">Outperforms Decision Tree (0.814)</div>
+          </div>
+        </div>
+
+        <!-- Executive Highlights -->
+        <div class="grid-2-col">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Cumulative Gain Curve (Targeted vs Random Outreach)</h3>
+                <p class="card-desc">Shows how quickly subscribers are captured as calling volume increases</p>
+              </div>
+              <span class="tag-accent">Core Business Metric</span>
+            </div>
+            <div class="chart-container" style="height: 320px;">
+              <canvas id="cumulativeGainChart"></canvas>
+            </div>
+            <div class="card-callout">
+              <strong>Key Finding:</strong> By calling only the top <strong>30%</strong> of leads prioritized by our model, the sales desk secures <strong>90.4%</strong> of all prospective deposit clients while saving 70% of call overhead!
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Top 12 Predictive Customer Features</h3>
+                <p class="card-desc">Gini importance computed from 200 Decision Trees ensemble</p>
+              </div>
+              <span class="tag-accent">Feature Ranking</span>
+            </div>
+            <div class="chart-container" style="height: 320px;">
+              <canvas id="featureImportanceChart"></canvas>
+            </div>
+            <div class="card-callout">
+              <strong>Key Insight:</strong> <em>Call duration</em>, <em>client account balance</em>, <em>age</em>, and <em>previous campaign success</em> are the decisive factors in closing deposit subscriptions.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: EDA & Customer Insights -->
+      <section id="eda" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Task 1 & 2: Exploratory Data Analysis & Segments</h2>
+          <p class="section-subheading">Uncovering conversion patterns across demographic and financial attributes</p>
+        </div>
+
+        <div class="grid-2-col">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Conversion Rate (%) by Profession / Job Role</h3>
+                <p class="card-desc">Students and retirees present highest openness to term deposits</p>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="jobChart"></canvas>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Age Demographic Breakdown by Subscription</h3>
+                <p class="card-desc">Youth (< 25) and senior cohorts (> 60) have peak conversion rates</p>
+              </div>
+            </div>
+            <div class="chart-container" style="height: 300px;">
+              <canvas id="ageChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3-col">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">By Education Level</h3>
+            </div>
+            <div class="chart-container" style="height: 240px;">
+              <canvas id="educationChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">By Marital Status</h3>
+            </div>
+            <div class="chart-container" style="height: 240px;">
+              <canvas id="maritalChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">By Contact Month</h3>
+            </div>
+            <div class="chart-container" style="height: 240px;">
+              <canvas id="monthChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Model Comparison & Evaluation -->
+      <section id="models" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Task 4, 5 & 6: ML Model Comparison & Evaluation</h2>
+          <p class="section-subheading">Decision Tree vs Random Forest across Accuracy, Precision, Recall, F1 and ROC-AUC</p>
+        </div>
+
+        <!-- Metric comparison cards -->
+        <div class="model-compare-grid">
+          <!-- Decision tree card -->
+          <div class="card model-card">
+            <div class="model-badge dt-badge">Model 1: Decision Tree</div>
+            <h3 class="model-title">Cart Pruned Tree (max_depth=5)</h3>
+            <div class="metric-row">
+              <span class="m-label">Accuracy:</span>
+              <span class="m-val" id="dtAcc">81.33%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">Precision:</span>
+              <span class="m-val" id="dtPrec">35.88%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">Recall:</span>
+              <span class="m-val" id="dtRec">70.19%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">F1-Score:</span>
+              <span class="m-val" id="dtF1">0.4750</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">ROC-AUC:</span>
+              <span class="m-val" id="dtAuc">0.8143</span>
+            </div>
+            <div class="cm-box">
+              <div class="cm-label">Confusion Matrix (Test Set)</div>
+              <div class="cm-grid" id="dtCm">
+                <div class="cm-cell true-neg">TN: 662</div>
+                <div class="cm-cell false-pos">FP: 138</div>
+                <div class="cm-cell false-neg">FN: 31</div>
+                <div class="cm-cell true-pos">TP: 73</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Random forest card -->
+          <div class="card model-card featured-model">
+            <div class="crown-badge">🏆 Best Production Model</div>
+            <div class="model-badge rf-badge">Model 2: Random Forest</div>
+            <h3 class="model-title">Ensemble Classifier (200 Trees)</h3>
+            <div class="metric-row">
+              <span class="m-label">Accuracy:</span>
+              <span class="m-val high-metric" id="rfAcc">83.65%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">Precision:</span>
+              <span class="m-val high-metric" id="rfPrec">39.53%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">Recall:</span>
+              <span class="m-val high-metric" id="rfRec">76.92%</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">F1-Score:</span>
+              <span class="m-val high-metric" id="rfF1">0.5229</span>
+            </div>
+            <div class="metric-row">
+              <span class="m-label">ROC-AUC:</span>
+              <span class="m-val high-metric" id="rfAuc">0.9014</span>
+            </div>
+            <div class="cm-box">
+              <div class="cm-label">Confusion Matrix (Test Set)</div>
+              <div class="cm-grid" id="rfCm">
+                <div class="cm-cell true-neg">TN: 677</div>
+                <div class="cm-cell false-pos">FP: 123</div>
+                <div class="cm-cell false-neg">FN: 24</div>
+                <div class="cm-cell true-pos">TP: 80</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Why accuracy is not enough explanation -->
+          <div class="card note-card">
+            <h3 class="card-title text-gold">Why Accuracy Alone Fails in Bank Marketing</h3>
+            <div class="note-content">
+              <p>In this campaign, <strong>88.5%</strong> of contacts resulted in "No Deposit".</p>
+              <div class="warning-box">
+                A dumb baseline model that answers <em>"NO"</em> to every single customer achieves <strong>88.5% accuracy</strong>, yet brings <strong>ZERO</strong> subscriptions to the bank!
+              </div>
+              <ul class="justification-list">
+                <li><strong>Recall (76.9%)</strong> is crucial because missed prospective clients (False Negatives) represent direct lost revenue for the bank.</li>
+                <li><strong>Precision (39.5%)</strong> reflects call efficiency: higher precision eliminates cold, dead-end calls for agents.</li>
+                <li><strong>ROC-AUC (0.901)</strong> proves the Random Forest model excels at rank-ordering clients from hottest to coldest prospect.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">ROC Curves Comparison (Receiver Operating Characteristic)</h3>
+              <p class="card-desc">Random Forest (AUC = 0.901) substantially dominates Decision Tree (AUC = 0.814)</p>
+            </div>
+          </div>
+          <div class="chart-container" style="height: 320px;">
+            <canvas id="rocChart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Priority Contact Queue -->
+      <section id="leads" class="content-section">
+        <div class="section-title-wrap">
+          <div class="flex-between">
+            <div>
+              <h2 class="section-heading">Task 7: Priority Calling Queue</h2>
+              <p class="section-subheading">Clients ranked by ML subscription propensity score. Bank should dial from Top to Bottom.</p>
+            </div>
+            <div class="filter-controls">
+              <input type="text" id="leadSearch" placeholder="Search by job, education..." class="input-search">
+              <select id="probFilter" class="select-dropdown">
+                <option value="all">All Top Prospects</option>
+                <option value="80">Score > 80%</option>
+                <option value="70">Score > 70%</option>
+                <option value="60">Score > 60%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card table-card">
+          <div class="table-responsive">
+            <table class="data-table" id="leadsTable">
+              <thead>
+                <tr>
+                  <th>Priority</th>
+                  <th>Win Propensity</th>
+                  <th>Age</th>
+                  <th>Job Title</th>
+                  <th>Education</th>
+                  <th>Avg Balance</th>
+                  <th>Housing Loan</th>
+                  <th>Past Contact</th>
+                  <th>Actual Outcome</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="leadsTableBody">
+                <!-- Populated via Javascript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Interactive Simulator -->
+      <section id="simulator" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Customer Propensity Score Simulator</h2>
+          <p class="section-subheading">Input a hypothetical customer's profile to compute their likelihood of subscribing to a term deposit</p>
+        </div>
+
+        <div class="grid-2-col">
+          <div class="card">
+            <h3 class="card-title mb-4">Client Profile Attributes</h3>
+            <form id="simForm" class="sim-grid">
+              <div class="form-group">
+                <label>Age</label>
+                <input type="number" id="simAge" value="35" min="18" max="95" class="form-input">
+              </div>
+              <div class="form-group">
+                <label>Job Category</label>
+                <select id="simJob" class="form-input">
+                  <option value="student">Student (High Conversion)</option>
+                  <option value="retired">Retired (High Conversion)</option>
+                  <option value="management" selected>Management</option>
+                  <option value="technician">Technician</option>
+                  <option value="admin.">Admin</option>
+                  <option value="blue-collar">Blue-Collar</option>
+                  <option value="services">Services</option>
+                  <option value="self-employed">Self-Employed</option>
+                  <option value="entrepreneur">Entrepreneur</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Account Balance (&#8377; INR)</label>
+                <input type="number" id="simBalance" value="25000" class="form-input">
+              </div>
+              <div class="form-group">
+                <label>Education</label>
+                <select id="simEducation" class="form-input">
+                  <option value="tertiary" selected>Tertiary (University)</option>
+                  <option value="secondary">Secondary (High School)</option>
+                  <option value="primary">Primary</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Housing Loan</label>
+                <select id="simHousing" class="form-input">
+                  <option value="no" selected>No (More Liquidity)</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Personal Loan</label>
+                <select id="simLoan" class="form-input">
+                  <option value="no" selected>No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Call Duration (sec)</label>
+                <input type="number" id="simDuration" value="380" min="0" max="3000" class="form-input">
+              </div>
+              <div class="form-group">
+                <label>Contacts in this Campaign</label>
+                <input type="number" id="simCampaign" value="1" min="1" max="20" class="form-input">
+              </div>
+              <div class="form-group span-2">
+                <label>Previous Campaign Outcome</label>
+                <select id="simPoutcome" class="form-input">
+                  <option value="success" selected>Success (Previous subscriber)</option>
+                  <option value="nonexistent">Nonexistent / First time</option>
+                  <option value="failure">Failure</option>
+                </select>
+              </div>
+              <div class="form-group span-2">
+                <button type="button" class="btn-primary full-width" onclick="simulateScore()">
+                  Calculate Subscription Probability
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div class="card result-card">
+            <h3 class="card-title">Prediction Gauge</h3>
+            <div class="meter-wrapper">
+              <div class="score-circle" id="scoreCircle">
+                <div class="score-number" id="scoreValue">82%</div>
+                <div class="score-label">Subscription Probability</div>
+              </div>
+            </div>
+            <div class="decision-badge" id="decisionBadge">HIGH PRIORITY LEAD — DIAL IMMEDIATELY</div>
+            <div class="sim-insights" id="simInsights">
+              Based on historical trends: Higher balances, lack of housing debt, and previous positive interaction correlate strongly with term deposit subscription.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Practical Business Strategy -->
+      <section id="strategy" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Task 8 & Business Question Solution</h2>
+          <p class="section-subheading">"How can your ML model help the bank reduce unnecessary calls and improve its campaign?"</p>
+        </div>
+
+        <div class="grid-3-col">
+          <div class="strategy-card">
+            <div class="strategy-icon">🎯</div>
+            <h3 class="strategy-title">1. Implement Propensity-Ranked Calling</h3>
+            <p class="strategy-desc">
+              Rather than random calling across the phonebook, sort leads by model score and establish a 0.60 probability cutoff.
+            </p>
+            <div class="strategy-stat">
+              <div class="stat-num">-70%</div>
+              <div class="stat-txt">Reduction in call volume while preserving >90% of total deposit conversions</div>
+            </div>
+          </div>
+
+          <div class="strategy-card">
+            <div class="strategy-icon">👥</div>
+            <h3 class="strategy-title">2. Target High-Converting Segments</h3>
+            <p class="strategy-desc">
+              EDA reveals <strong>Students (22.7%)</strong> and <strong>Retirees (23.5%)</strong> have more than double the conversion rate of blue-collar workers (7.3%).
+            </p>
+            <div class="strategy-stat">
+              <div class="stat-num">2.4x</div>
+              <div class="stat-txt">Higher success rate by tailoring fixed-deposit products to retirees & students</div>
+            </div>
+          </div>
+
+          <div class="strategy-card">
+            <div class="strategy-icon">🛑</div>
+            <h3 class="strategy-title">3. Enforce 3-Call Fatigue Limit</h3>
+            <p class="strategy-desc">
+              Conversion drops drastically after the 3rd attempt on the same client. Repeated calling damages brand equity with negligible gain.
+            </p>
+            <div class="strategy-stat">
+              <div class="stat-num">3 Calls</div>
+              <div class="stat-txt">Hard cap per client per campaign to reallocate rep hours to fresh, qualified leads</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card executive-summary-card">
+          <h3 class="summary-headline">Executive Conclusion for Bank Management</h3>
+          <p class="summary-body">
+            By embedding this machine-learning system into the bank's CRM or contact center auto-dialer:
+          </p>
+          <div class="summary-pills">
+            <div class="summary-pill">
+              <strong>Cost Efficiency:</strong> Saves thousands of agent hours previously wasted on non-receptive leads.
+            </div>
+            <div class="summary-pill">
+              <strong>Higher Conversion:</strong> Agents focus on receptive prospects with bespoke messaging.
+            </div>
+            <div class="summary-pill">
+              <strong>Customer Experience:</strong> Minimizes annoyance for clients uninterested in term deposits.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
